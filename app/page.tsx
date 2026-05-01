@@ -1,65 +1,137 @@
-import Image from "next/image";
+import Link from "next/link";
+import { HeroSectionSplit } from "@/components/HeroSection";
+import { MutuoWordmarkPurpose } from "@/components/MutuoWordmark";
+import { ImagePlaceholder } from "@/components/ImagePlaceholder";
+import { MainFooter } from "@/components/MainFooter";
+import { ProjectsStack } from "@/components/ProjectsStack";
+import {
+  ABOUT_IMAGE,
+  SERVICES_ARCHITECTURE_IMAGE,
+  SERVICES_ARQUI2_IMAGE,
+} from "@/lib/public-images";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <>
+      <HeroSectionSplit />
+      <section
+        id="purpose"
+        aria-label="Propósito"
+        className="scroll-mt-24 flex min-h-[100dvh] flex-col justify-center bg-[#f2f2f0] px-6 py-16 md:px-10 md:py-20"
+      >
+        <div className="mx-auto flex w-full max-w-3xl flex-col items-start justify-center">
+          <MutuoWordmarkPurpose />
+          <p
+            lang="es"
+            className="max-w-xl text-left text-lg font-light leading-[2] text-neutral-600 md:text-[1.35rem] md:leading-[1.95]"
+          >
+            Somos una Agencia que integra la mirada de diversos{" "}
+            <strong className="font-semibold italic text-neutral-800">
+              profesionales creativos
+            </strong>{" "}
+            para brindar{" "}
+            <strong className="font-semibold italic text-neutral-800">
+              soluciones integrales
+            </strong>{" "}
+            en materia de Comunicación.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="#stack"
+            className="mt-14 inline-flex rounded-full border border-neutral-300 px-9 py-3.5 text-[13px] font-light tracking-wide text-neutral-800 transition-colors hover:border-neutral-500"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            What we do
+          </Link>
         </div>
-      </main>
-    </div>
+      </section>
+
+      <section
+        id="services"
+        aria-label="Arquitectura"
+        className="grid min-h-[100dvh] w-full scroll-mt-24 grid-cols-1 bg-black md:grid-cols-2"
+      >
+        <div className="relative min-h-[50dvh] w-full md:min-h-[100dvh]">
+          <ImagePlaceholder
+            src={SERVICES_ARCHITECTURE_IMAGE}
+            alt=""
+            sizes="(max-width: 768px) 100vw, 50vw"
+            objectFit="contain"
+            unoptimized
+            className="absolute inset-0 size-full min-h-[50dvh] md:min-h-[100dvh]"
+          />
+        </div>
+        <div className="relative min-h-[50dvh] w-full md:min-h-[100dvh]">
+          <ImagePlaceholder
+            src={SERVICES_ARQUI2_IMAGE}
+            alt=""
+            sizes="(max-width: 768px) 100vw, 50vw"
+            objectFit="contain"
+            unoptimized
+            className="absolute inset-0 size-full min-h-[50dvh] md:min-h-[100dvh]"
+          />
+        </div>
+      </section>
+
+      <section className="flex min-h-[50vh] flex-col justify-center bg-black px-6 py-24 text-white md:min-h-[55vh] md:px-10">
+        <div className="mx-auto w-full max-w-6xl">
+          <p className="text-[11px] font-light uppercase tracking-[0.28em] text-white/45">
+            Featured
+          </p>
+          <h2 className="mt-2 text-[clamp(3rem,9vw,6.75rem)] font-extralight leading-[0.95]">
+            projects
+          </h2>
+          <Link
+            href="/work"
+            className="mt-12 inline-flex rounded-full border border-white/40 px-9 py-3.5 text-[12px] font-light uppercase tracking-[0.18em] text-white transition-colors hover:border-white"
+          >
+            View all
+          </Link>
+        </div>
+      </section>
+
+      <ProjectsStack />
+
+      <section
+        id="about"
+        className="scroll-mt-24 grid grid-cols-1 bg-white md:min-h-[85vh] md:grid-cols-2"
+      >
+        <div className="flex flex-col justify-center px-6 py-20 md:px-14 lg:px-20">
+          <p className="text-[13px] font-light text-neutral-500">texto</p>
+          <h2 className="mt-5 text-[clamp(2rem,4vw,3.25rem)] font-light leading-snug tracking-tight text-neutral-900">
+            texto
+          </h2>
+          <Link
+            href="/work"
+            className="mt-12 inline-flex w-fit rounded-full border border-neutral-300 px-9 py-3.5 text-[13px] font-light text-neutral-800 transition-colors hover:border-neutral-500"
+          >
+            texto
+          </Link>
+        </div>
+        <div className="relative min-h-[52vh] w-full md:min-h-0">
+          <ImagePlaceholder
+            src={ABOUT_IMAGE}
+            alt=""
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="absolute inset-0 size-full rounded-none md:min-h-[85vh]"
+          />
+        </div>
+      </section>
+
+      <section
+        id="contact"
+        className="scroll-mt-24 border-t border-neutral-200 bg-white py-20 text-center"
+      >
+        <p className="text-[11px] font-light uppercase tracking-[0.22em] text-neutral-500">
+          Contact
+        </p>
+        <a
+          href="mailto:hola@mutuoagencia.com"
+          className="mt-4 inline-block text-lg font-light text-neutral-900 underline-offset-4 hover:underline"
+        >
+          hola@mutuoagencia.com
+        </a>
+      </section>
+
+      <MainFooter />
+    </>
   );
 }
