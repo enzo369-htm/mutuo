@@ -8,7 +8,10 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     const prefersReduced =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
+    const isDesktop =
+      typeof window !== "undefined" &&
+      window.matchMedia("(min-width: 768px)").matches;
+    if (prefersReduced || !isDesktop) return;
 
     const lenis = new Lenis({
       duration: 1.15,

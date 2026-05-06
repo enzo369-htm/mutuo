@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "lenis/dist/lenis.css";
 import "./globals.css";
+import { DesktopMinimumNotice } from "@/components/DesktopMinimumNotice";
 import { SmoothScroll } from "@/components/SmoothScroll";
 
 const inter = Inter({
@@ -26,8 +27,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} h-full`}>
-      <body className="min-h-full flex flex-col font-sans font-light antialiased">
-        <SmoothScroll>{children}</SmoothScroll>
+      <body className="flex min-h-full flex-col font-sans font-light antialiased max-md:h-[100dvh] max-md:overflow-hidden">
+        <SmoothScroll>
+          <div className="flex min-h-full flex-1 flex-col max-md:hidden">{children}</div>
+          <DesktopMinimumNotice />
+        </SmoothScroll>
       </body>
     </html>
   );
