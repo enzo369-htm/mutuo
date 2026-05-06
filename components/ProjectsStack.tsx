@@ -1,23 +1,31 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import { ProjectCard } from "@/components/ProjectCard";
 import { PROJECTS } from "@/lib/projects";
-import { coverForProjectSlug } from "@/lib/public-images";
+import { coverForProjectSlug, coversForProjectSlug } from "@/lib/public-images";
 
-const STACK_TRACK_VH = 155;
+const STACK_TRACK_VH = 130;
 
 function StackScrollItem({
   slug,
   title,
   categoryLabel,
   index,
+  isLast,
 }: {
   slug: string;
   title: string;
   categoryLabel: string;
   index: number;
+  isLast: boolean;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -25,17 +33,37 @@ function StackScrollItem({
     offset: ["start start", "end start"],
   });
 
-  const scale = useTransform(scrollYProgress, [0, 0.55, 1], [1, 1, 0.82]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 0.85, 1], [1, 1, 0.72, 0.38]);
-  const y = useTransform(scrollYProgress, [0, 1], [0, -56]);
-  const rotateX = useTransform(scrollYProgress, [0, 0.45, 1], [0, 0, 9]);
+  // Lenis already handles inertial smoothing; the spring just removes the
+  // last bit of jitter on framer-motion's scroll signal so transforms breathe.
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 220,
+    damping: 36,
+    mass: 0.45,
+  });
+
+  // Continuous curves (no flat plateau) so the card starts reacting from the
+  // very first pixel of scroll and hands off smoothly to the next one.
+  const scale = useTransform(progress, [0, 1], [1, 0.88]);
+  const opacity = useTransform(progress, [0, 0.7, 1], [1, 0.85, isLast ? 1 : 0.45]);
+  const y = useTransform(progress, [0, 1], [0, -90]);
+  const rotateX = useTransform(progress, [0, 1], [0, 7]);
   const filter = useTransform(
-    scrollYProgress,
-    [0, 0.55, 1],
-    ["brightness(1) saturate(1)", "brightness(1) saturate(1)", "brightness(0.55) saturate(0.85)"],
+    progress,
+    [0, 1],
+    ["brightness(1) saturate(1)", "brightness(0.7) saturate(0.9)"],
   );
 
   const prefersReducedMotion = useReducedMotion();
+
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const motionStyle =
+    mounted && prefersReducedMotion !== true
+      ? { scale, opacity, y, rotateX, filter }
+      : undefined;
 
   return (
     <div
@@ -46,17 +74,7 @@ function StackScrollItem({
       <div className="sticky top-0 flex h-[100dvh] items-center justify-center px-4 pb-28 pt-24 md:px-10 [perspective:1400px] [transform-style:preserve-3d]">
         <motion.div
           className="relative w-full max-w-4xl origin-[50%_45%] will-change-transform"
-          style={
-            prefersReducedMotion === true
-              ? undefined
-              : {
-                  scale,
-                  opacity,
-                  y,
-                  rotateX,
-                  filter,
-                }
-          }
+          style={motionStyle}
         >
           <ProjectCard
             variant="stack"
@@ -64,6 +82,7 @@ function StackScrollItem({
             category={categoryLabel}
             href={`/work/${slug}`}
             imageSrc={coverForProjectSlug(slug)}
+            imageSrcs={coversForProjectSlug(slug)}
           />
         </motion.div>
       </div>
@@ -90,6 +109,7 @@ export function ProjectsStack() {
           title={project.title}
           categoryLabel={project.categoryLabel}
           index={index}
+          isLast={index === items.length - 1}
         />
       ))}
     </section>

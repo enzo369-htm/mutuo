@@ -45,6 +45,17 @@ export const PROJECT_COVER_FILENAME: Record<
   valuge: "Vesta .jpg",
 };
 
+/**
+ * Triptychs: cuando un proyecto tiene varias imágenes que se muestran en
+ * grilla horizontal (de izquierda a derecha) en lugar de una sola portada.
+ * Si un slug está acá, tiene prioridad sobre `PROJECT_COVER_FILENAME`.
+ */
+export const PROJECT_COVERS_FILENAMES: Partial<
+  Record<keyof typeof PROJECT_COVER_FILENAME, string[]>
+> = {
+  koda: ["studiotercio1.jpg", "estudiotercio2.jpg", "estudiotercio3.jpg"],
+};
+
 export function projectCoverHref(
   slug: keyof typeof PROJECT_COVER_FILENAME,
 ): string {
@@ -59,6 +70,13 @@ function isProjectSlug(slug: string): slug is ProjectSlug {
 
 export function coverForProjectSlug(slug: string): string {
   return isProjectSlug(slug) ? projectCoverHref(slug) : projectCoverHref("koda");
+}
+
+export function coversForProjectSlug(slug: string): string[] {
+  const safeSlug: ProjectSlug = isProjectSlug(slug) ? slug : "koda";
+  const multi = PROJECT_COVERS_FILENAMES[safeSlug];
+  if (multi && multi.length > 0) return multi.map(publicAssetPath);
+  return [projectCoverHref(safeSlug)];
 }
 
 export function coversAllUploads(filename: string): boolean {

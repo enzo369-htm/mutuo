@@ -5,7 +5,6 @@ import { ImagePlaceholder } from "@/components/ImagePlaceholder";
 import { MainFooter } from "@/components/MainFooter";
 import { ProjectsStack } from "@/components/ProjectsStack";
 import {
-  ABOUT_IMAGE,
   SERVICES_ARCHITECTURE_IMAGE,
   SERVICES_ARQUI2_IMAGE,
 } from "@/lib/public-images";
@@ -106,13 +105,10 @@ export default function Home() {
             texto
           </Link>
         </div>
-        <div className="relative min-h-[52vh] w-full md:min-h-0">
-          <ImagePlaceholder
-            src={ABOUT_IMAGE}
-            alt=""
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className="absolute inset-0 size-full rounded-none md:min-h-[85vh]"
-          />
+        <div className="relative flex min-h-[52vh] w-full items-center justify-center md:min-h-0">
+          <span className="text-[13px] font-light uppercase tracking-[0.22em] text-neutral-500">
+            Imagen
+          </span>
         </div>
       </section>
 
